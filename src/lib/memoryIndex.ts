@@ -411,6 +411,21 @@ export class MemoryIndex {
     return notes + turns;
   }
 
+  /**
+   * Cheap existence check: does the index hold *any* embedding?
+   * Uses EXISTS so SQLite stops at the first matching row instead of
+   * scanning both embedding tables in full (as embeddingCount() does).
+   * Prefer this over `embeddingCount() > 0` on hot paths.
+   */
+  hasEmbeddings(): boolean {
+    const row = this.db
+      .prepare(
+        "SELECT (EXISTS(SELECT 1 FROM note_embeddings) OR EXISTS(SELECT 1 FROM turn_embeddings)) AS present",
+      )
+      .get() as { present: number };
+    return row.present === 1;
+  }
+
   // -------------------------------------------------------------
   // Search
   // -------------------------------------------------------------

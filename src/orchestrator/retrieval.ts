@@ -85,7 +85,7 @@ export async function retrieveContext(
     if (
       opts.embeddings.provider === "gemini" &&
       opts.embeddings.gemini?.apiKey &&
-      ix.embeddingCount() > 0
+      ix.hasEmbeddings()
     ) {
       const r = await geminiEmbed(opts.embeddings.gemini.apiKey, query, {
         model: opts.embeddings.gemini.model,

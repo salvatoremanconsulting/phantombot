@@ -99,7 +99,7 @@ export async function runMemorySearch(
     if (
       config.embeddings.provider === "gemini" &&
       config.embeddings.gemini?.apiKey &&
-      ix.embeddingCount() > 0
+      ix.hasEmbeddings()
     ) {
       const r = await geminiEmbed(
         config.embeddings.gemini.apiKey,
